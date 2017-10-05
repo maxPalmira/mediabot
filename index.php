@@ -117,6 +117,7 @@
     <link rel="shortcut icon" href="images/favicon/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/main.css">
     <link href="//vjs.zencdn.net/5.4.6/video-js.min.css" rel="stylesheet">
+    <link href="css/video-js.css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="css/px-video.css" /> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     
@@ -166,7 +167,7 @@
 
                                 $path = ($dir . '/' . $name);
 
-                                if (is_dir($path) AND $name[0] != '.') {
+                                if (is_dir($path) AND $name[0] != '.' AND strpos($name, '.hls') === false) {
                                     echo '<li>';
 
                                     echo "<span class='main-a' data-path='" . $path . "'>" . $name . '</span>';
@@ -190,12 +191,6 @@
         </header>
         <div class="main">
             <div class="catalog">
-
-<video id="myplayer" class="video-js vjs-default-skin" controls preload="auto">
-  <!-- <source src="http://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8" type="application/x-mpegURL"> -->
-  <!-- <source src="http://localhost/mediaserver/films/Фильмы/hls-example/playlist.m3u8" type="application/x-mpegURL"> -->
-  <source src="http://localhost/mediaserver/films/Movies/hls-example/chunklist-b450000.m3u8" type="application/x-mpegURL">
-</video>
 
                 <ul class="catalog__list catalog__items" id="catalog-films">    
                     <li class="openvideo" data-src="" data-name="" data-thumb="" style="display:none;">
@@ -255,24 +250,21 @@
             ?>
             
 
-            </div>
+        </div>
         
-            <!-- <div id="player"></div> -->
-            <video id="player" class="video-js vjs-default-skin vjs-big-play-centered"></video>
+            <video id="player-template" style="display:none;" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto">
+                  <source src="" type="">
+            </video>
        
             <div id="video-overlay"></div>
-        </div>
+</div>
+
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery.bxslider.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="//vjs.zencdn.net/5.4.6/video.min.js"></script>
-    <!-- <script src="js/videojs-contrib-hls.min.js"></script> -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.11.0/videojs-contrib-hls.min.js"></script>
-
-
-            <script>
-            var player = videojs('myplayer',function(){});
-            </script>
+    <script src="js/video.js"></script>
+    <script src="js/videojs-contrib-hls.min.js"></script>
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.11.0/videojs-contrib-hls.min.js"></script> -->
 
 </body>
 </html>

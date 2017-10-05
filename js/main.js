@@ -117,18 +117,27 @@ var mediabot = {
         $(document).on('click', '.openvideo', function(e) {
             e.preventDefault();
 
-            var newdiv = document.createElement("video");
-            newdiv.setAttribute('id','player');
-            newdiv.setAttribute('class','video-js vjs-default-skin vjs-big-play-centered');
-
-            document.body.appendChild(newdiv);
+            var player = $('#player-template').clone().show();
+            player.attr('id', 'player');
+            var source = player.children('source');
 
             var videoSrc = $(this).data('src');
             var videoName = $(this).data('name');
             var videoImage = $(this).data('thumb');
             // var media_id = $(this).attr('data-id');
                             
-            window.player = videojs('player', {
+            if (videoSrc.match('.m3u8')) {
+                source.attr('type', 'application/x-mpegURL')
+            }
+            else {
+                source.attr('type', 'video/mp4')
+            }
+
+            source.attr('src', videoSrc)
+
+            $('body').append(player);
+
+            videojs('player', {
                 controls: true,
                 autoplay: false,
                 preload: 'auto',
@@ -139,30 +148,12 @@ var mediabot = {
                 }
             });
 
-            console.log(videoSrc);
 
-            player.src(videoSrc);
-
-            $('#video-overlay').fadeIn(400, function(){ 
+            $('#video-overlay').fadeIn(400, function() { 
 
                 $('#player').show().animate({opacity: 1}, 200);
-                /*player.setup(conf).then(function(value) {
-                    // console.log("Successfully created bitmovin player instance");
-                    
-                    }, function(reason) {
-                            // Error!
-                            // console.log("Error while creating bitmovin player instance");
-                    
-                    }); */
             });
                          
-                    // $.ajax({
-                    //     url: 'index.php?addViews',
-                    //     type: 'post', 
-                    //     data: {media_id:media_id},
-                    //     success: function(data) {},
-                    //     error: function() {} 
-                    // });    
         }); 
 
         $('#video-overlay').click(function(){
@@ -170,8 +161,7 @@ var mediabot = {
                     $(this).hide();
                     $(this).html('');
                     $('#video-overlay').fadeOut(400);
-                    var oldPlayer = document.getElementById('player');
-                    videojs(oldPlayer).dispose();
+                    videojs('player').dispose();
             });
         });
 
